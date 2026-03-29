@@ -1,17 +1,35 @@
-/** Add new entries here: { id, title, url, note?, showCopyLink?, openInBrave? } — openInBrave uses watchlist-brave: (see tools/). */
+/**
+ * Add entries: { id, title, url, note?, image?, watching?, showCopyLink?, openInBrave? }
+ * watching: true = front-and-center; false = on-hold styling (dimmed / badge).
+ * UI order: currently watching first, then on hold (sorted in main.js).
+ * Posters in public/posters/: houseofdragons.jpg, ertugrul.jpg, therookie.jpg
+ */
 export const watchlist = [
   {
     id: 'house-of-the-dragon',
     title: 'House of the Dragon',
     url: 'https://www.hotstar.com/in/shows/house-of-the-dragon/1971002877',
-    note: 'Disney+ Hotstar — picks up after Game of Thrones.',
+    note: 'Disney+ Hotstar — the Targaryen civil war. Watching now.',
+    image: '/posters/houseofdragons.jpg',
+    watching: true,
   },
   {
     id: 'resurrection-ertugrul',
     title: 'Resurrection: Ertuğrul',
     url: 'https://streamex.sh/watch/tv/66017?s=1&e=1&server=vidpro',
-    note:
-      'Watch Now opens in Brave after a one-time setup: run tools\\Register-WatchlistBraveProtocol.ps1 on this PC. First click may ask to allow the watchlist-brave link.',
+    note: 'Turkish historical drama (Diriliş: Ertuğrul). On the shelf for now — not watching at the moment.',
+    image: '/posters/ertugrul.jpg',
+    watching: false,
+    openInBrave: true,
+    showCopyLink: true,
+  },
+  {
+    id: 'the-rookie',
+    title: 'The Rookie',
+    url: 'https://streamex.sh/watch/tv/79744?s=8&e=2&server=streamx',
+    note: 'LAPD drama — watching now; new episodes land midnight Mondays.',
+    image: '/posters/therookie.jpg',
+    watching: true,
     openInBrave: true,
     showCopyLink: true,
   },

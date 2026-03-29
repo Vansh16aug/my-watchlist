@@ -51,9 +51,38 @@ function render() {
   const list = document.createElement('ul');
   list.className = 'watchlist';
 
-  for (const item of watchlist) {
+  const ordered = [...watchlist].sort((a, b) => {
+    const rank = (item) => (item.watching === false ? 1 : 0);
+    return rank(a) - rank(b);
+  });
+
+  ordered.forEach((item) => {
     const li = document.createElement('li');
     li.className = 'card';
+    if (item.watching !== false) {
+      li.classList.add('card--watching');
+    } else {
+      li.classList.add('card--on-hold');
+    }
+
+    let media = null;
+    if (item.image) {
+      li.classList.add('card--has-poster');
+      media = document.createElement('div');
+      media.className = 'card__media';
+      const poster = document.createElement('img');
+      poster.className = 'card__poster';
+      poster.src = item.image;
+      poster.alt = `Poster: ${item.title}`;
+      poster.decoding = 'async';
+      poster.loading = 'lazy';
+      media.append(poster);
+    }
+
+    const badge = document.createElement('span');
+    badge.className =
+      item.watching !== false ? 'card__badge' : 'card__badge card__badge--hold';
+    badge.textContent = item.watching !== false ? 'Currently watching' : 'On hold';
 
     const title = document.createElement('h2');
     title.className = 'card__title';
@@ -73,18 +102,11 @@ function render() {
     if (item.openInBrave) {
       watch.title =
         'Opens Brave with this link (requires watchlist-brave: registered — see tools folder).';
-      const fallback = document.createElement('a');
-      fallback.className = 'card__fallback';
-      fallback.href = item.url;
-      fallback.target = '_blank';
-      fallback.rel = 'noopener noreferrer';
-      fallback.textContent = 'Open in this browser instead';
-      actions.append(watch, fallback);
     } else {
       watch.target = '_blank';
       watch.rel = 'noopener noreferrer';
-      actions.append(watch);
     }
+    actions.append(watch);
 
     if (item.showCopyLink) {
       const copyBtn = document.createElement('button');
@@ -95,9 +117,17 @@ function render() {
       actions.append(copyBtn);
     }
 
-    li.append(title, note, actions);
+    const body = document.createElement('div');
+    body.className = 'card__body';
+    body.append(badge, title, note, actions);
+
+    if (media) {
+      li.append(media, body);
+    } else {
+      li.append(body);
+    }
     list.append(li);
-  }
+  });
 
   app.innerHTML = '';
   const header = document.createElement('header');
